@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tap to Earn Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            background: #f3f4f6;
+        }
+        .container {
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        #coinButton {
+            background: #4CAF50;
+            color: white;
+            font-size: 24px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px #2e7d32;
+        }
+        #coinButton:active {
+            box-shadow: 0 2px #2e7d32;
+            transform: translateY(2px);
+        }
+        .stats {
+            margin: 20px 0;
+            font-size: 18px;
+        }
+        .upgrade {
+            margin: 20px 0;
+            padding: 10px 20px;
+            font-size: 18px;
+            background: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px #e65100;
+        }
+        .upgrade:disabled {
+            background: #ddd;
+            color: #aaa;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tap to Earn</h1>
+        <button id="coinButton">Tap to Earn Coins!</button>
+        <div class="stats">
+            <p>Coins: <span id="coinCount">0</span></p>
+            <p>Coins per Tap: <span id="coinPerTap">1</span></p>
+        </div>
+        <button id="upgradeButton" class="upgrade" disabled>Upgrade (Cost: 50 Coins)</button>
+    </div>
+
+    <script>
+        // JavaScript variables
+        let coins = 0;
+        let coinsPerTap = 1;
+        let upgradeCost = 50;
+
+        // DOM elements
+        const coinButton = document.getElementById('coinButton');
+        const upgradeButton = document.getElementById('upgradeButton');
+        const coinCount = document.getElementById('coinCount');
+        const coinPerTap = document.getElementById('coinPerTap');
+
+        // Tap to earn coins
+        coinButton.addEventListener('click', () => {
+            coins += coinsPerTap;
+            coinCount.textContent = coins;
+
+            // Enable upgrade button if coins are sufficient
+            if (coins >= upgradeCost) {
+                upgradeButton.disabled = false;
+            }
+        });
+
+        // Upgrade coins per tap
+        upgradeButton.addEventListener('click', () => {
+            if (coins >= upgradeCost) {
+                coins -= upgradeCost;
+                coinsPerTap += 1;
+                upgradeCost = Math.floor(upgradeCost * 1.5); // Increase upgrade cost
+
+                // Update stats
+                coinCount.textContent = coins;
+                coinPerTap.textContent = coinsPerTap;
+                upgradeButton.textContent = `Upgrade (Cost: ${upgradeCost} Coins)`;
+
+                // Disable upgrade button if coins are insufficient
+                if (coins < upgradeCost) {
+                    upgradeButton.disabled = true;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
